@@ -1,3 +1,5 @@
+import 'package:chat_app/screens/chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chat_app/screens/auth.dart';
@@ -22,7 +24,12 @@ class App extends StatelessWidget {
          colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 63, 17, 177)),
       ),
-      home: const AuthScreen(),
+      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (ctx, snapshot) {
+        if(snapshot.hasData) {
+          return ChatScreen();
+        }
+        return const AuthScreen();
+      },),
     );
   }
 }
